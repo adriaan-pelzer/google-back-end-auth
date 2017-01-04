@@ -55,6 +55,8 @@ or, if you're using the node *request* module, you can use the *signRequest* hel
     } ), callback );
 ```
 
+*_NOTE:_ If you use this helper method with request.post, make sure to also include the _method: 'post'_ attribute in the request object - if there's no method object, signRequest will assume it's a _get_ request*
+
 ##VERIFY THE TOKEN/SIGNATURE IN YOUR API
 
 ```

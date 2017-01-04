@@ -60,7 +60,7 @@ module.exports.verifyToken = ( client_id, id_token, callback ) => {
 module.exports.signRequest = ( config, req ) => {
     return R.merge ( req, {
         qs: R.merge ( req.qs || {}, {
-            sig: module.exports.sign ( config.client_id, config.client_secret, req.url, req.method.toUpperCase (), null, true )
+            sig: module.exports.sign ( config.client_id, config.client_secret, req.url, req.method ? req.method.toUpperCase () : 'GET', null, true )
         } )
     } );
 };
