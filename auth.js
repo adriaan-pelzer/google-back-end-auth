@@ -1,6 +1,7 @@
 const crypto = require ( 'crypto' );
 const R = require ( 'ramda' );
 const request = require ( 'request' );
+const url = require ( 'url' );
 
 const getGoogleCerts = ( kid, cb ) => {
     request ( {
@@ -16,21 +17,22 @@ const getGoogleCerts = ( kid, cb ) => {
 
 const google = require ( 'google-id-token' ), parser = new google ( { getKeys: getGoogleCerts } );
 
-module.exports.sign = ( client_id, client_secret, url, method, body, bin ) => {
+module.exports.sign = ( client_id, client_secret, path, method, body, bin ) => {
     const hash = crypto.createHash ( 'sha256' );
+    const Path = url.parse ( path.match ( /^http/ ) ? path : ( 'http://dummy-base-url.com' + path ) ).pathName;
     const Body = body && ( R.type ( body ) === 'String' ? body : JSON.stringify ( body ) );
     const stringToSign = Body ?
-        `${client_secret}${client_id}${R.head ( R.split ( '?', url ) )}${method}${Body}` :
-        `${client_secret}${client_id}${R.head ( R.split ( '?', url ) )}${method}`;
+        `${client_secret}${client_id}${Path}${method}${Body}` :
+        `${client_secret}${client_id}${Path}${method}`;
 
     hash.update ( bin ? stringToSign : new Buffer ( stringToSign ) );
 
     return hash.digest ( 'hex' );
 };
 
-module.exports.verifySig = ( client_id, client_secret, url, method, sig, body ) => {
-    return module.exports.sign ( client_id, client_secret, url, method, body, true ) === sig ||
-        module.exports.sign ( client_id, client_secret, url, method, body, false ) === sig;
+module.exports.verifySig = ( client_id, client_secret, path, method, sig, body ) => {
+    return module.exports.sign ( client_id, client_secret, path, method, body, true ) === sig ||
+        module.exports.sign ( client_id, client_secret, path, method, body, false ) === sig;
 };
 
 module.exports.verifyToken = ( client_id, id_token, callback ) => {
@@ -132,9 +134,9 @@ if ( ! module.parent ) {
         const client_secret = ranChar ( '', 7 );
         const method = ranChar ( '', 4 );
         const body = Math.random () < 0.5 ? null : ranChar ( '', 2000 );
-        const url = [ ranChar ( '', 20 ), ranChar ( '', 20 ) ].join ( '?' );
+        const path = [ ranChar ( '', 20 ), ranChar ( '', 20 ) ].join ( '?' );
 
-        return [ round, client_id, client_secret, method, url, module.exports.verifySig ( client_id, client_secret, url, method, module.exports.sign ( client_id, client_secret, url, method, body, ( Math.random () < 0.5 ) ), body ) ];
+        return [ round, client_id, client_secret, method, path, module.exports.verifySig ( client_id, client_secret, path, method, module.exports.sign ( client_id, client_secret, path, method, body, ( Math.random () < 0.5 ) ), body ) ];
     };
 
     R.forEach ( ( out ) => {
@@ -146,7 +148,7 @@ if ( ! module.parent ) {
             console.log ( `client_id: ${out[1]}` );
             console.log ( `client_secret: ${out[2]}` );
             console.log ( `method: ${out[3]}` );
-            console.log ( `url: ${out[4]}` );
+            console.log ( `path: ${out[4]}` );
         }
     }, R.map ( test, R.range ( 0, 100 ) ) );
 }
