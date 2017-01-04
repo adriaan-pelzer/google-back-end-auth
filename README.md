@@ -11,7 +11,7 @@ Build an authenticated back end service that uses google auth tokens
 Firstly, in your repository, run:
 
 ```
-    npm install --save google-backend-auth
+    npm install --save google-back-end-auth
 ```
 
 Then, in your code:
