@@ -36,15 +36,7 @@ Back end authentication works by adding a signature to the query. This signature
     http://your-api.com/some-resource?sig=<signature>
 ```
 
-The back end uses one of two methods (both supported by the same method in this module):
-
-###Signing the request *with* full payload
-
-```
-    const signature = googleBackendAuth.sign ( google_client_id, google_client_secret, url, method, body );
-```
-
-###Signing the request *without* full payload
+Do this by calculating the signature with the *sign* method:
 
 ```
     const signature = googleBackendAuth.sign ( google_client_id, google_client_secret, url, method );
@@ -64,8 +56,6 @@ or, if you're using the node *request* module, you can use the *signRequest* hel
 ```
 
 ##VERIFY THE TOKEN/SIGNATURE IN YOUR API
-
-*This only works for back end auth _without_ full body payload*
 
 ```
     const googleConfig = {
