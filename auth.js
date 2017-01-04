@@ -131,10 +131,22 @@ if ( ! module.parent ) {
         const client_id = ranChar ( '', 7 );
         const client_secret = ranChar ( '', 7 );
         const method = ranChar ( '', 4 );
+        const body = Math.random () < 0.5 ? null : ranChar ( '', 2000 );
         const url = [ ranChar ( '', 20 ), ranChar ( '', 20 ) ].join ( '?' );
 
-        return [ round, client_id, client_secret, method, url, module.exports.verifySig ( client_id, client_secret, url, method, module.exports.sign ( client_id, client_secret, url, method, ( Math.random () < 0.5 ) ) ) ];
+        return [ round, client_id, client_secret, method, url, module.exports.verifySig ( client_id, client_secret, url, method, module.exports.sign ( client_id, client_secret, url, method, body, ( Math.random () < 0.5 ) ), body ) ];
     };
 
-    console.log ( R.map ( test, R.range ( 0, 100 ) ) );
+    R.forEach ( ( out ) => {
+        console.log ( `Test round ${out[0]}` );
+        if ( out[5] ) {
+            console.log ( 'Success' );
+        } else {
+            console.log ( '*** ERROR ***' );
+            console.log ( `client_id: ${out[1]}` );
+            console.log ( `client_secret: ${out[2]}` );
+            console.log ( `method: ${out[3]}` );
+            console.log ( `url: ${out[4]}` );
+        }
+    }, R.map ( test, R.range ( 0, 100 ) ) );
 }

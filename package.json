@@ -1,0 +1,32 @@
+{
+  "name": "google-back-end-auth",
+  "version": "0.0.1",
+  "description": "Build an authenticated back end service that uses google auth tokens",
+  "main": "auth.js",
+  "scripts": {
+    "test": "node auth.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/adriaan-pelzer/google-back-end-auth.git"
+  },
+  "keywords": [
+    "Google",
+    "sign-in",
+    "back",
+    "end",
+    "auth"
+  ],
+  "author": "Adriaan Pelzer",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/adriaan-pelzer/google-back-end-auth/issues"
+  },
+  "homepage": "https://github.com/adriaan-pelzer/google-back-end-auth#readme",
+  "dependencies": {
+    "crypto": "0.0.3",
+    "google-id-token": "^0.1.5",
+    "ramda": "^0.23.0",
+    "request": "^2.79.0"
+  }
+}
