@@ -27,6 +27,7 @@
     "crypto": "0.0.3",
     "google-id-token": "^0.1.5",
     "ramda": "^0.23.0",
-    "request": "^2.79.0"
+    "request": "^2.79.0",
+    "url": "^0.11.0"
   }
 }
