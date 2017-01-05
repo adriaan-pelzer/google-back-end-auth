@@ -19,7 +19,7 @@ const google = require ( 'google-id-token' ), parser = new google ( { getKeys: g
 
 module.exports.sign = ( client_id, client_secret, path, method, body, bin ) => {
     const hash = crypto.createHash ( 'sha256' );
-    const Path = url.parse ( path.match ( /^http/ ) ? path : ( 'http://dummy-base-url.com' + path ) ).pathName;
+    const Path = url.parse ( path.match ( /^http/ ) ? path : ( 'http://dummy-base-url.com' + path ) ).pathname;
     const Body = body && ( R.type ( body ) === 'String' ? body : JSON.stringify ( body ) );
     const stringToSign = Body ?
         `${client_secret}${client_id}${Path}${method}${Body}` :
