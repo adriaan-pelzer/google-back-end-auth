@@ -1,6 +1,6 @@
 {
   "name": "google-back-end-auth",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "Build an authenticated back end service that uses google auth tokens",
   "main": "auth.js",
   "scripts": {
